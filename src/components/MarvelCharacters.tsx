@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getMarvelCharacters } from '../services/marvelApi';
 
 interface Character {
@@ -16,8 +17,7 @@ const MarvelCharacters: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string>(''); // Estado para o filtro de busca
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); // Estado para a ordenação
-  const [favorites, setFavorites] = useState<number[]>([]); // Estado para os IDs dos personagens favoritos
-  const [showFavoritesOnly, setShowFavoritesOnly] = useState<boolean>(false); // Estado para mostrar apenas favoritos
+  const [favorites, setFavorites] = useState<number[]>([]); // Lista de favoritos
 
   useEffect(() => {
     const fetchCharacters = async () => {
@@ -26,8 +26,34 @@ const MarvelCharacters: React.FC = () => {
       setCharacters(data);
       setLoading(false);
     };
+
+    // Carregar favoritos do localStorage ao montar o componente
+    const storedFavorites = localStorage.getItem('favorites');
+    if (storedFavorites) {
+      setFavorites(JSON.parse(storedFavorites));
+    }
+
     fetchCharacters();
   }, []);
+
+  // Função para favoritar ou desfavoritar um personagem
+  const toggleFavorite = (characterId: number) => {
+    if (favorites.includes(characterId)) {
+      // Se já estiver nos favoritos, desfavoritar
+      const newFavorites = favorites.filter((id) => id !== characterId);
+      setFavorites(newFavorites);
+      localStorage.setItem('favorites', JSON.stringify(newFavorites)); // Atualiza no localStorage
+    } else {
+      // Se não estiver, favoritar (respeitando o limite de 5)
+      if (favorites.length < 5) {
+        const newFavorites = [...favorites, characterId];
+        setFavorites(newFavorites);
+        localStorage.setItem('favorites', JSON.stringify(newFavorites)); // Atualiza no localStorage
+      } else {
+        alert('Você pode favoritar no máximo 5 personagens.');
+      }
+    }
+  };
 
   // Função para ordenar os personagens
   const sortCharacters = (characters: Character[], order: 'asc' | 'desc') => {
@@ -43,22 +69,8 @@ const MarvelCharacters: React.FC = () => {
     character.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Função para adicionar/remover favoritos
-  const toggleFavorite = (id: number) => {
-    if (favorites.includes(id)) {
-      setFavorites(favorites.filter((favoriteId) => favoriteId !== id)); // Desfavoritar
-    } else if (favorites.length < 5) {
-      setFavorites([...favorites, id]); // Favoritar (máximo de 5)
-    }
-  };
-
   // Aplicar ordenação após filtrar
   const sortedAndFilteredCharacters = sortCharacters(filteredCharacters, sortOrder);
-
-  // Mostrar apenas os personagens favoritos, se necessário
-  const displayedCharacters = showFavoritesOnly
-    ? sortedAndFilteredCharacters.filter((character) => favorites.includes(character.id))
-    : sortedAndFilteredCharacters;
 
   if (loading) return <div>Carregando...</div>;
 
@@ -81,15 +93,9 @@ const MarvelCharacters: React.FC = () => {
         <button onClick={() => setSortOrder('desc')}>Ordenar Z-A</button>
       </div>
 
-      {/* Botão para mostrar apenas favoritos */}
-      <div>
-        <button onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}>
-          {showFavoritesOnly ? 'Mostrar Todos' : 'Mostrar Apenas Favoritos'}
-        </button>
-      </div>
-
+      {/* Renderizando a lista de personagens */}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {displayedCharacters.map((character) => (
+        {sortedAndFilteredCharacters.map((character) => (
           <div key={character.id} style={{ margin: 10, width: 200 }}>
             <img
               src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
@@ -98,7 +104,12 @@ const MarvelCharacters: React.FC = () => {
             />
             <h3>{character.name}</h3>
             <p>{character.description || 'Sem descrição'}</p>
-            {/* Botão de Favoritar */}
+
+            <Link to={`/character/${character.id}`}>
+              <button>Ver Detalhes</button>
+            </Link>
+
+            {/* Botão de Favoritar/Desfavoritar */}
             <button onClick={() => toggleFavorite(character.id)}>
               {favorites.includes(character.id) ? 'Desfavoritar' : 'Favoritar'}
             </button>
