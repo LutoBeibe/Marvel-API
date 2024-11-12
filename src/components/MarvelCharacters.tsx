@@ -16,6 +16,8 @@ const MarvelCharacters: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string>(''); // Estado para o filtro de busca
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); // Estado para a ordenação
+  const [favorites, setFavorites] = useState<number[]>([]); // Estado para os IDs dos personagens favoritos
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState<boolean>(false); // Estado para mostrar apenas favoritos
 
   useEffect(() => {
     const fetchCharacters = async () => {
@@ -41,8 +43,22 @@ const MarvelCharacters: React.FC = () => {
     character.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Função para adicionar/remover favoritos
+  const toggleFavorite = (id: number) => {
+    if (favorites.includes(id)) {
+      setFavorites(favorites.filter((favoriteId) => favoriteId !== id)); // Desfavoritar
+    } else if (favorites.length < 5) {
+      setFavorites([...favorites, id]); // Favoritar (máximo de 5)
+    }
+  };
+
   // Aplicar ordenação após filtrar
   const sortedAndFilteredCharacters = sortCharacters(filteredCharacters, sortOrder);
+
+  // Mostrar apenas os personagens favoritos, se necessário
+  const displayedCharacters = showFavoritesOnly
+    ? sortedAndFilteredCharacters.filter((character) => favorites.includes(character.id))
+    : sortedAndFilteredCharacters;
 
   if (loading) return <div>Carregando...</div>;
 
@@ -65,8 +81,15 @@ const MarvelCharacters: React.FC = () => {
         <button onClick={() => setSortOrder('desc')}>Ordenar Z-A</button>
       </div>
 
+      {/* Botão para mostrar apenas favoritos */}
+      <div>
+        <button onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}>
+          {showFavoritesOnly ? 'Mostrar Todos' : 'Mostrar Apenas Favoritos'}
+        </button>
+      </div>
+
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {sortedAndFilteredCharacters.map((character) => (
+        {displayedCharacters.map((character) => (
           <div key={character.id} style={{ margin: 10, width: 200 }}>
             <img
               src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
@@ -75,6 +98,10 @@ const MarvelCharacters: React.FC = () => {
             />
             <h3>{character.name}</h3>
             <p>{character.description || 'Sem descrição'}</p>
+            {/* Botão de Favoritar */}
+            <button onClick={() => toggleFavorite(character.id)}>
+              {favorites.includes(character.id) ? 'Desfavoritar' : 'Favoritar'}
+            </button>
           </div>
         ))}
       </div>
