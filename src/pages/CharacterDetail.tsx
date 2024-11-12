@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getMarvelCharacterDetails } from '../services/marvelApi';
 
 interface Character {
@@ -79,6 +80,12 @@ const CharacterDetail: React.FC = () => {
 
   return (
     <div>
+        {/* Texto "Personagens da Marvel" clicável que direciona para a página inicial */}
+      <h1>
+        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+          Personagens da Marvel
+        </Link>
+      </h1>
       <h1>{character.name}</h1>
       <img
         src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
