@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getMarvelCharacters } from '../services/marvelApi';
+import './MarvelCharacters.css';
 
 interface Character {
   id: number;
@@ -24,7 +25,7 @@ const MarvelCharacters: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(0); // Total de páginas
   const itemsPerPage = 20; // Número de personagens por página
 
-  // Função para buscar personagens com base no search (só é chamada quando o formulário for enviado)
+  // Função para buscar personagens com base no search (somente chamada quando o botão for pressionado)
   const fetchCharacters = async () => {
     setLoading(true);
     const { results, total } = await getMarvelCharacters(currentPage, itemsPerPage, search); // Passa o searchTerm para a API
@@ -85,85 +86,125 @@ const MarvelCharacters: React.FC = () => {
   // Recarregar personagens quando a página mudar
   useEffect(() => {
     fetchCharacters(); // Só chamamos fetchCharacters aqui
-  }, [currentPage]); // Não dependa mais de search, para não buscar toda vez que search mudar
+  }, [currentPage, search]); // Agora vai atualizar quando a pesquisa ou página mudar
 
   useEffect(() => {
     loadAllFavorites(); // Carrega favoritos ao iniciar
   }, []);
-
-  if (loading) return <div>Carregando...</div>;
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <img 
+          src="/assets/icones/heroi/noun_Superhero_2227044@1,5x.svg" // Coloque o caminho correto para sua imagem
+          alt="Carregando..."
+        />
+        <p>Carregando...</p> {/* Texto abaixo da imagem */}
+      </div>
+    );
+  }
+  
 
   return (
     <div>
       <h1>
-        {/* Ao clicar no título, recarrega a página */}
-        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }} onClick={() => window.location.reload()}>
-          Personagens da Marvel
+        <Link to="/" onClick={() => window.location.reload()} className="logo-container">
+          <img 
+            src="/assets/logo/Group@1,5x.svg" 
+            alt="Personagens da Marvel" 
+            className="logo"
+          />
         </Link>
       </h1>
-
-      {/* Formulário de busca com botão de enviar */}
+      <div className="explore-text">
+        <p className="explore-title">EXPLORE O UNIVERSO</p>
+        <p className="explore-description">
+          Mergulhe no domínio deslumbrante de todos os personagens clássicos que você ama - e aqueles que você descobrirá em breve.
+        </p>
+      </div>
+      
+      {/* Formulário de busca */}
       <form
         onSubmit={(e) => {
-          e.preventDefault(); // Impede o comportamento padrão do formulário (não recarregar a página)
-          fetchCharacters(); // Chama a função para buscar personagens com o termo de pesquisa
+          e.preventDefault(); // Impede o comportamento padrão do formulário
+          fetchCharacters(); // Passa o valor do termo de pesquisa para a função
         }}
+        className="search-form"
       >
+        <button disabled className="search-btn">
+          <img src="/assets/busca/Lupa/Shape@1,5x.svg" alt="Buscar" className="search-btn-img" />
+        </button>
         <input
           type="text"
           placeholder="Buscar por nome..."
           value={search}
           onChange={(e) => setSearch(e.target.value)} // Atualiza o valor do campo de busca
-          style={{ padding: '5px', marginBottom: '20px', width: '200px' }}
+          className="search-input"
         />
-        <button type="submit" style={{ padding: '5px 10px', marginLeft: '10px' }}>
-          Buscar
-        </button>
       </form>
 
-      {/* Contador de personagens disponíveis na API */}
-      <div>
+      <div className="info-container">
         <p>Total de personagens disponíveis: {totalCharacters}</p>
+        <div className="right-items">
+        <div className="switch-container">
+        <img 
+    src="/assets/icones/heroi/noun_Superhero_2227044@1,5x.svg"  // Caminho para sua imagem
+    alt="Ícone de Ordenação"
+    className="sort-icon"  // Classe para o ícone
+  />
+  <span className="switch-label">
+    Ordenar A-Z
+  </span>
+ 
+  <label className="switch">
+    <input
+      type="checkbox"
+      checked={sortOrder === 'desc'}
+      onChange={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+    />
+    <span className="slider"></span>
+  </label>
+</div>
+
+          <div className="favorites-toggle" onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}>
+            <span className="favorites-icon">
+              <img
+                src={showFavoritesOnly ? '/assets/icones/heart/Path.svg' : '/assets/icones/heart/Path Copy 2@1,5x.svg'}
+                alt="Coração"
+                className="heart-icon"
+              />
+            </span>
+            <span className="favorites-text">{showFavoritesOnly ? 'Mostrar Todos' : 'Somente Favoritos'}</span>
+          </div>
+        </div>
       </div>
 
-      {/* Botões de ordenação */}
-      <div>
-        <button onClick={() => setSortOrder('asc')}>Ordenar A-Z</button>
-        <button onClick={() => setSortOrder('desc')}>Ordenar Z-A</button>
-      </div>
-
-      {/* Botão para alternar entre favoritos */}
-      <div>
-        <button onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}>
-          {showFavoritesOnly ? 'Mostrar Todos' : 'Mostrar Apenas Favoritos'}
-        </button>
-      </div>
-
-      {/* Renderizando a lista de personagens */}
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      <div className="character-container">
         {sortedAndFilteredCharacters.map((character) => (
-          <div key={character.id} style={{ margin: 10, width: 200 }}>
-            <img
-              src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
-              alt={character.name}
-              style={{ width: '100%' }}
-            />
-            <h3>{character.name}</h3>
-            <p>{character.description || 'Sem descrição'}</p>
-
+          <div key={character.id} className="character-card">
             <Link to={`/character/${character.id}`}>
-              <button>Ver Detalhes</button>
+              <img
+                src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
+                alt={character.name}
+              />
             </Link>
-
-            <button onClick={() => toggleFavorite(character.id)}>
-              {favorites.includes(character.id) ? 'Desfavoritar' : 'Favoritar'}
-            </button>
+            <div className="character-header">
+              <h3>{character.name}</h3>
+              <button onClick={() => toggleFavorite(character.id)} className="favorite-button">
+                <img
+                  src={favorites.includes(character.id)
+                    ? '/assets/icones/heart/Path@1,5x.svg'
+                    : '/assets/icones/heart/Path Copy 2@1,5x.svg'}
+                  alt={favorites.includes(character.id) ? 'Favoritado' : 'Não favoritado'}
+                  className="favorite-icon"
+                  style={{ width: '25px', height: '25px' }}
+                />
+              </button>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Navegação entre as páginas */}
-      <div>
+      <div className="footer">
         <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
           Anterior
         </button>
