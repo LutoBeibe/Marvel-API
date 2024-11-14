@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getMarvelCharacters } from '../../services/marvelApi';
-import styles from './MarvelCharacters.module.css'; // Importando o CSS Module
+import styles from './MarvelCharacters.module.css';
+import debounce from 'lodash.debounce'; // Importando o debounce
 
 interface Character {
   id: number;
@@ -14,25 +15,27 @@ interface Character {
 }
 
 const MarvelCharacters: React.FC = () => {
-  const [characters, setCharacters] = useState<Character[]>([]);  
-  const [loading, setLoading] = useState<boolean>(false);  
-  const [search, setSearch] = useState<string>('');  
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');  
-  const [favorites, setFavorites] = useState<number[]>([]);  
-  const [showFavoritesOnly, setShowFavoritesOnly] = useState<boolean>(false);  
-  const [currentPage, setCurrentPage] = useState<number>(1);  
-  const [totalCharacters, setTotalCharacters] = useState<number>(0);  
-  const [totalPages, setTotalPages] = useState<number>(0); 
-  const itemsPerPage = 20; 
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [favorites, setFavorites] = useState<number[]>([]);
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalCharacters, setTotalCharacters] = useState<number>(0);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const itemsPerPage = 20;
 
   const fetchCharacters = async () => {
     setLoading(true);
     const { results, total } = await getMarvelCharacters(currentPage, itemsPerPage, search);
     setCharacters(results);
-    setTotalCharacters(total);  
-    setTotalPages(Math.ceil(total / itemsPerPage)); 
+    setTotalCharacters(total);
+    setTotalPages(Math.ceil(total / itemsPerPage));
     setLoading(false);
   };
+
+  const debounceFetchCharacters = debounce(fetchCharacters, 1000); // 500ms de delay
 
   const toggleFavorite = (characterId: number) => {
     let newFavorites;
@@ -76,7 +79,7 @@ const MarvelCharacters: React.FC = () => {
   const sortedAndFilteredCharacters = sortCharacters(displayedCharacters, sortOrder);
 
   useEffect(() => {
-    fetchCharacters(); 
+    debounceFetchCharacters(); // Usando o debounce ao invés de chamar fetchCharacters diretamente
   }, [currentPage, search]);
 
   useEffect(() => {
@@ -127,7 +130,7 @@ const MarvelCharacters: React.FC = () => {
           type="text"
           placeholder="Buscar por nome..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)} // O debounce será acionado aqui
           className={styles['search-input']}
         />
       </form>

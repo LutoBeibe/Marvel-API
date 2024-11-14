@@ -10,24 +10,53 @@
   
   .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Espaça a logo e a barra de pesquisa */
     align-items: center;
     width: 100%;
     padding: 10px;
-    max-width: 1200px;
+    max-width: 1200px; /* Para limitar a largura máxima */
+    margin: 0 auto; /* Centraliza o conteúdo horizontalmente */
   }
   
   .logo {
-    width: 150px;
+    width: 250px;
     margin-left: 20px;
+  }
+
+  .logo-link {
+    flex-shrink: 0; /* Garante que a logo não encolha */
+  }
+
+  .search-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza a barra de pesquisa */
+    flex-grow: 1; /* Faz com que a barra de pesquisa ocupe o máximo de espaço disponível */
+    margin-left: 20px; /* Distância da logo até a barra de pesquisa */
   }
   
   .search-bar {
-    padding: 10px;
-    font-size: 16px;
-    width: 200px;
-    margin-right: 20px;
+    padding: 12px 20px; /* Aumenta o padding para deixar a barra mais confortável */
+    font-size: 16px; /* Tamanho da fonte */
+    width: 100%;
+    max-width: 500px; /* Limita o tamanho máximo da barra de pesquisa */
+    margin-right: 10px; /* Distância entre a barra de pesquisa e o ícone de lupa */
+    border-radius: 25px; /* Borda arredondada */
+    border: 1px solid #ccc; /* Cor de borda */
+    background-color: #f8f8f8; /* Cor de fundo suave */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transições suaves para borda e sombra */
+    background-image: url('/assets/busca/Lupa/Shape@1,5x.svg'); /* Imagem da lupa */
+    background-size: 20px 20px; /* Tamanho da lupa */
+    background-repeat: no-repeat; /* Não repetir a imagem */
+    background-position: left 10px center; /* Posiciona a lupa à esquerda dentro da barra */
+    padding-left: 40px; /* Espaço à esquerda para garantir que o texto não sobreponha a lupa */
   }
+  
+  .search-bar:focus {
+    border-color: #007bff; /* Cor de borda quando a barra estiver em foco */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra sutil quando a barra estiver em foco */
+  }
+
   
   .character-container {
     display: flex;
@@ -52,10 +81,16 @@
   }
   
   .character-details {
-    flex: 2;
-    max-width: 600px;
-    text-align: left; 
+    flex: 1; /* Reduz a largura da seção para 1 parte, o que a deixa 30% menor em relação ao tamanho atual */
+    max-width: 420px; /* Limita o tamanho máximo a 420px, ou 30% menor em relação aos 600px anteriores */
+    text-align: justify; /* Justifica o texto dentro da seção */
+    padding: 10px; /* Adiciona um pequeno padding, se necessário */
   }
+  
+  .character-details p {
+    text-align: justify; /* Justifica todos os parágrafos dentro da seção de detalhes */
+  }
+  
   .character-name-container {
     display: flex;
     align-items: center; /* Alinha verticalmente o nome e o botão */
@@ -71,17 +106,13 @@
   
   .favorite-button {
     margin-left: 20px; /* Espaço entre o nome e o botão */
-    background-color: #ff5c5c;
     border: none;
     color: white;
     padding: 10px 20px;
     cursor: pointer;
     margin-top: 10px;
   }
-  
-  .favorite-button:hover {
-    background-color: #ff2a2a;
-  }
+
   
   .additional-info {
     margin-top: 20px;
@@ -89,36 +120,34 @@
   }
   
   .character-comics {
-    margin-top: 40px;
-    width: 100%;
+    width: 100%; /* Garante que a largura da seção de quadrinhos ocupe 100% da largura disponível */
+    max-width: 1200px; /* Garante que o conteúdo não ultrapasse essa largura */
+    margin: 0 auto; /* Centraliza a grid de quadrinhos */
+    padding: 20px; /* Adiciona espaçamento interno, se necessário */
   }
   
   .comics-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 colunas de largura igual */
+    gap: 20px; /* Espaçamento entre os quadrinhos */
+    justify-items: center; /* Garante que os itens da grid fiquem centralizados */
   }
   
   .comic-item {
-    width: 200px;
-    margin: 10px;
-    text-align: center;
+    text-align: center; /* Centraliza o conteúdo dentro de cada quadrinho */
   }
   
   .comic-item img {
-    width: 100%;
+    width: 100%; /* Faz a imagem ocupar toda a largura do item */
     height: auto;
   }
+  
+  
 
   .additional-info {
   margin-top: 20px;
 }
 
-.additional-info .info-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px; /* Para dar espaço entre as linhas */
-}
 
 .additional-info .info-row p {
   margin: 0;
@@ -134,6 +163,83 @@
 }
 
   
+  .additional-info .info-item {
+    display: flex;
+    flex-direction: column; /* Título em cima, número embaixo */
+    align-items: center; /* Centraliza o título e o número */
+    gap: 5px; /* Espaço entre o título e o número */
+    width: 45%; /* Controla a largura de cada item */
+  }
+  
+  .info-item p {
+    margin: 0; /* Remove margens extras do parágrafo */
+  }
+  
+  .info-item span {
+    font-size: 18px; /* Ajuste de tamanho para o número */
+  }
+
+  .additional-info .info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px; /* Espaço entre as linhas */
+  }
+  
+  .rating {
+    display: flex;
+    align-items: center; /* Alinha a imagem e o texto na mesma linha */
+    gap: 10px; /* Espaço entre a imagem e o texto */
+  }
+  
+  .rating-image {
+    width: auto; /* Ajuste o tamanho da imagem conforme necessário */
+    height: auto;
+  }
+  
+  .rating span {
+    font-size: 18px; /* Ajuste de tamanho do número */
+  }
+  .favorite-icon {
+    width: 24px; /* ou qualquer outro tamanho desejado */
+    height: 24px;
+  }
+  
+  /* Contêiner de carregamento */
+.loading-container {
+  display: flex;
+  justify-content: center; /* Alinha horizontalmente */
+  align-items: center;     /* Alinha verticalmente */
+  height: 100vh;           /* Garante que o container ocupe 100% da altura da tela */
+  flex-direction: column;  /* Coloca a imagem e o texto em coluna */
+}
+
+/* Estilos para a imagem de carregamento */
+.loading-container img {
+  width: 150px; /* Ajuste o tamanho da imagem conforme necessário */
+  height: auto;
+  margin-bottom: 10px; /* Espaçamento entre a imagem e o texto */
+}
+
+/* Estilos para o texto de carregamento */
+.loading-container p {
+  font-weight: bold;   /* Deixa o texto em negrito */
+  font-size: 16px;     /* Tamanho do texto */
+  color: #333;         /* Cor do texto */
+}
+
+.footer {
+  background-color: red;  /* Define o fundo vermelho */
+  color: white;           /* Define a cor do texto como branco */
+  text-align: center;     /* Centraliza o texto */
+  padding: 20px 0;        /* Espaçamento interno */
+  font-size: 16px;        /* Define o tamanho da fonte */
+  width:100%;
+}
+
+.footer p {
+  margin: 0;              /* Remove a margem para evitar espaçamento extra */
+}
+
   
   
   
