@@ -6,7 +6,7 @@ body {
   flex-direction: column; /* Organiza os itens na direção vertical */
   min-height: 100vh; /* Garante altura mínima de 100% da tela */
   margin: 0; /* Remove margens padrão */
-  font-family: Arial, sans-serif; /* Define a fonte padrão */
+  font-family: "Work Sans", Arial, sans-serif; /* Define a fonte padrão */
   background-color: transparent; /* Cor de fundo transparente */
 }
 
@@ -326,7 +326,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #b9b9b9;
   transition: 0.4s;
   border-radius: 50px;
 }
@@ -339,18 +339,19 @@ body {
   border-radius: 50px;
   left: 4px;
   bottom: 4px;
-  background-color: white;
+  background-color: #ff1510;
   transition: 0.4s;
 }
 
 /* Estilo quando o switch está ativado */
 input:checked + .slider {
-  background-color: #4CAF50;
+  background-color: #b9b9b9;
 }
 
 /* Estilo do círculo dentro do switch quando ativado */
 input:checked + .slider:before {
   transform: translateX(26px);
+  
 }
 
 /* Contêiner de carregamento */
