@@ -26,6 +26,9 @@ Obs:
 # Clonar o repositório
 git clone https://github.com/LutoBeibe/Marvel-API.git
 
+# Para acessar a pasta do projeto
+cd Marvel-API
+
 # Para usar a versão do node.js utilizada do projeto
 nvm use
 
