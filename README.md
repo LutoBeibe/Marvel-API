@@ -1,4 +1,4 @@
-# Utilziação de API heróis da Marvel
+# Utilização da API de heróis da Marvel
 
 Desafio Front End de uma SPA com página de busca de heróis da Marvel e outra página de detalhes do herói.
 
