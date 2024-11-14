@@ -25,8 +25,17 @@ interface Character {
   };
   comics: {
     available: number;
+    id: number;
+    title: string;
+    dates: ComicDate[];
   };
 }
+
+interface ComicDate {
+  type: string;
+  date: string; // Change to 'Date' if 'date' is a Date object instead of a string
+}
+
 
 // Função para buscar personagens com paginação e filtro por nome
 export const getMarvelCharacters = async (page: number, limit: number, searchTerm?: string): Promise<{ results: Character[], total: number }> => {
@@ -75,7 +84,7 @@ export const getMarvelCharacterDetails = async (characterId: number) => {
 
     // Encontrar a data do último quadrinho disponível
     const lastComic = comicsData[0];
-    const lastComicDate = lastComic?.dates?.find(date => date.type === 'onsaleDate')?.date ?? null;
+    const lastComicDate = lastComic?.dates?.find((date: ComicDate) => date.type === 'onsaleDate')?.date ?? null;
 
     // Definindo valores fictícios ou genéricos para movieCount e rating
     const movieCount = Math.floor(Math.random() * 5);  // Por exemplo, aleatório entre 0 e 4

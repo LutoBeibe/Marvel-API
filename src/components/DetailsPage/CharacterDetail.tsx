@@ -46,27 +46,29 @@ const CharacterDetail: React.FC = () => {
           comicCount,
           movieCount,
           rating,
-          lastComicDate,
+          lastComicDate: lastComicDateFromApi,
         } = await getMarvelCharacterDetails(Number(id));
-
+  
         setCharacter(characterData);
         setComics(comicsData);
         setComicCount(comicCount);
         setMovieCount(movieCount);
-        setRating(rating);
-        setLastComicDate(lastComicDate);
+        setRating(rating ? Number(rating) : null); // Certifique-se de que `rating` é do tipo correto
+        setLastComicDate(lastComicDateFromApi); // Atribuindo a data do último quadrinho
         setLoading(false);
       }
     };
-
+  
     // Recupera os favoritos do localStorage
     const storedFavorites = localStorage.getItem('favorites');
     if (storedFavorites) {
       setFavorites(JSON.parse(storedFavorites));
     }
-
+  
     fetchCharacterDetails();
   }, [id]);
+  
+
 
   // Função para alternar o estado de favorito
   const toggleFavorite = (characterId: number) => {
@@ -81,6 +83,7 @@ const CharacterDetail: React.FC = () => {
       localStorage.setItem('favorites', JSON.stringify(newFavorites));
     }
   };
+  
 
   // Função para formatar a data
   const formatDate = (dateString: string | null) => {
@@ -187,6 +190,7 @@ const CharacterDetail: React.FC = () => {
             <div className={styles['info-row']}>
               <div className={styles['rating']}>
                 <p><strong>Avaliação:</strong></p>
+                
                 {rating && rating > 3 ? (
                   <img 
                     src="/assets/review/Group 4@1,5x.svg" 

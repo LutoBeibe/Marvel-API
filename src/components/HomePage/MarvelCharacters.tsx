@@ -15,6 +15,7 @@ interface Character {
   };
 }
 
+
 const MarvelCharacters: React.FC = () => {
   // Estado do componente
   const [characters, setCharacters] = useState<Character[]>([]);  // Lista de personagens
