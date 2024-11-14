@@ -16,7 +16,7 @@ Desafio Front End de uma SPA com página de busca de heróis da Marvel e outra p
 Obs:
 
 - Para rodar o projeto é necessário ter o [Node.js](https://nodejs.org/) instalado.
-- Para API funciona você precisa configurar sua Chave Publica e Chave Privada, caso não tenha acesse [Marvel](https://developer.marvel.com/docs)
+- Para API funcionar você precisa configurar na marvelApi.ts sua Chave Publica e Chave Privada, caso não tenha acesse [Marvel](https://developer.marvel.com/docs)
 - Rode `nvm use` para usar a versão do node.js utilizada no projeto.
   - caso não tenha a versão do node.js utilizada no projeto, instale com `nvm install`.
 
