@@ -1,74 +1,76 @@
 /* MarvelCharacters.css */
-/* Estilo do corpo para garantir que o conteúdo ocupe toda a altura da tela */
+
+/* Estilos globais para o corpo da página */
 body {
   display: flex;
   flex-direction: column; /* Organiza os itens na direção vertical */
-  min-height: 100vh; /* Garante que o corpo tenha pelo menos a altura da tela */
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #0000; /* Fundo claro */
+  min-height: 100vh; /* Garante altura mínima de 100% da tela */
+  margin: 0; /* Remove margens padrão */
+  font-family: Arial, sans-serif; /* Define a fonte padrão */
+  background-color: transparent; /* Cor de fundo transparente */
 }
 
-/* Contêiner principal onde os personagens são exibidos */
+/* Contêiner principal para os cards de personagens */
 .character-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Cria colunas responsivas */
+  gap: 20px; /* Espaçamento entre os cards */
   padding: 20px;
   margin: 0 20px;
-  width: 100%;
-  max-width: 1200px;
+  width: 100%; /* Largura máxima de 100% */
+  max-width: 1200px; /* Limita a largura máxima */
   text-align: center;
-  flex-grow: 1; /* Permite que o contêiner ocupe espaço extra */
+  flex-grow: 1; /* Faz o contêiner crescer para ocupar o espaço restante */
 }
+
+/* Estilo do contêiner principal para todo o conteúdo da página */
 .main-container {
   display: flex;
   flex-direction: column;
-  min-height: 100%; /* Garante que ocupe a altura da tela */
+  min-height: 100%; /* Garante altura mínima */
 }
 
-
-/* Cada card de personagem */
+/* Estilo para cada card de personagem */
 .character-card {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff; /* Cor de fundo do card */
+  border-radius: 8px; /* Bordas arredondadas */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave ao redor do card */
   padding: 15px;
   text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; /* Centraliza o conteúdo */
 }
 
-/* Estilo da imagem */
+/* Imagem do personagem */
 .character-card img {
   width: 100%; /* Ocupa toda a largura disponível */
-  height: 200px; /* Altura fixa */
-  object-fit: cover; /* Cobre toda a área sem distorcer a imagem */
-  border-radius: 8px;
+  height: 200px; /* Altura fixa para consistência */
+  object-fit: cover; /* Cobre a área sem distorcer a imagem */
+  border-radius: 8px; /* Bordas arredondadas */
 }
 
-/* Contêiner para o nome e o botão favoritar */
+/* Contêiner do nome e botão de favoritar */
 .character-header {
   display: flex;
-  justify-content: space-between; /* Coloca o nome e o botão nas extremidades */
-  align-items: center; /* Alinha verticalmente */
-  width: 100%; /* Garante que o container ocupe toda a largura do card */
+  justify-content: space-between; /* Alinha o nome e o botão nas extremidades */
+  align-items: center;
+  width: 100%; /* Ocupa toda a largura do card */
   margin-top: 10px;
 }
 
 /* Nome do personagem */
 .character-card h3 {
   margin: 0;
-  font-size: 18px;
-  flex: 1; /* Faz com que o nome ocupe o máximo de espaço disponível */
-  font-weight: bold;
+  font-size: 18px; /* Tamanho da fonte */
+  font-weight: bold; /* Deixa o nome em negrito */
+  flex: 1; /* Faz o nome ocupar o máximo de espaço */
 }
 
 /* Descrição do personagem */
 .character-card p {
-  font-size: 14px;
-  color: #666;
+  font-size: 14px; /* Tamanho da fonte para a descrição */
+  color: #666; /* Cor do texto (cinza claro) */
   margin-top: 10px;
   margin-bottom: 15px;
 }
@@ -77,19 +79,19 @@ body {
 .favorite-icon {
   width: 25px;
   height: 25px;
-  cursor: pointer;
+  cursor: pointer; /* Indica que o ícone é clicável */
 }
 
-/* Ajustes para telas menores */
+/* Responsividade para telas menores */
 @media (max-width: 1200px) {
   .character-container {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* 3 colunas em telas menores */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Ajusta para 3 colunas em telas menores */
   }
 }
 
 @media (max-width: 800px) {
   .character-container {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2 colunas em telas ainda menores */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Ajusta para 2 colunas em telas médias */
   }
 }
 
@@ -98,31 +100,32 @@ body {
     grid-template-columns: 1fr; /* 1 coluna em telas muito pequenas */
   }
 
+  /* Ajusta o tamanho da fonte em dispositivos móveis */
   .character-card h3 {
-    font-size: 16px; /* Ajusta o tamanho da fonte em dispositivos móveis */
+    font-size: 16px;
   }
 
+  /* Ajusta a descrição em telas menores */
   .character-card p {
-    font-size: 12px; /* Ajusta o tamanho da descrição */
+    font-size: 12px;
   }
 }
 
-/* Estilo para o contêiner do botão "Somente Favoritos" */
+/* Estilos para o botão "Somente Favoritos" */
 .favorites-toggle {
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Alinha o conteúdo à direita */
+  justify-content: flex-end;
   cursor: pointer;
   gap: 8px;
   font-size: 16px;
   font-weight: 500;
-  width: 100%; /* Garantir que o botão ocupe toda a largura */
-  margin-right: 20px; /* Espaçamento à direita */
-  position: relative; /* Adiciona posicionamento para usar z-index */
-  z-index: 2; /* Faz o botão "Somente Favoritos" ficar à frente */
+  margin-right: 20px;
+  position: relative;
+  z-index: 2; /* Garante que o botão fique acima de outros elementos */
 }
 
-/* Estilo para o contêiner do botão "Ordenar" */
+/* Estilos para o botão "Ordenar" */
 .order-toggle {
   display: flex;
   align-items: center;
@@ -130,50 +133,49 @@ body {
   gap: 8px;
   font-size: 16px;
   font-weight: 500;
-  position: absolute; /* Posiciona o botão "Ordenar" de forma absoluta */
-  right: 0; /* Alinha à direita dentro do contêiner */
-  z-index: 1; /* Faz o botão "Ordenar" ficar atrás */
+  position: absolute;
+  right: 0;
+  z-index: 1; /* Fica abaixo do botão de favoritos */
 }
 
-/* Texto "Somente Favoritos" */
+/* Estilo do texto do "Somente Favoritos" */
 .favorites-text {
-  display: inline-block;
   font-size: 16px;
   color: #333;
-  transition: color 0.3s ease;
-  margin-right: 20px; /* Ajuste para alinhar o texto com o contêiner */
+  transition: color 0.3s ease; /* Transição suave de cor */
+  margin-right: 20px;
 }
 
-/* Cor do texto quando estiver em 'Somente Favoritos' */
+/* Efeito de hover para o texto "Somente Favoritos" */
 .favorites-text:hover {
-  color: #FF1510;  /* Altera a cor do texto para verde ao passar o mouse */
+  color: #FF1510; /* Muda a cor ao passar o mouse */
 }
 
-
-/* Estilo para o conteúdo que fica acima do rodapé */
+/* Estilos para o conteúdo acima do rodapé */
 .content-wrapper {
-  flex-grow: 1; /* Faz com que o conteúdo ocupe todo o espaço disponível */
-  padding-bottom: 80px; /* Dá um espaçamento suficiente para o rodapé não sobrepor o conteúdo */
+  flex-grow: 1;
+  padding-bottom: 80px; /* Evita que o conteúdo sobreponha o rodapé */
 }
 
-/* Estilos do Rodapé */
+/* Estilos do rodapé */
 .footer {
-  background-color: red; /* Fundo vermelho */
+  background-color: red;
   padding: 20px;
   text-align: center;
-  color: white; /* Texto branco */
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 20px;
-  width: 100%; /* Garante que o footer ocupe 100% da largura */
-  position: relative; /* Garante que o rodapé fique no final da página */
-  bottom: 0; /* Alinha o rodapé ao fundo */
+  width: 100%;
+  position: relative;
+  bottom: 0;
 }
 
+/* Estilo do botão do rodapé */
 .footer button {
-  background-color: white; /* Fundo branco para os botões */
-  color: red; /* Texto vermelho */
+  background-color: white;
+  color: red;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
@@ -181,94 +183,94 @@ body {
   font-size: 16px;
 }
 
+/* Estado desabilitado do botão no rodapé */
 .footer button:disabled {
-  background-color: #ccc; /* Cor para o botão desabilitado */
-  color: #888; /* Cor do texto do botão desabilitado */
+  background-color: #ccc;
+  color: #888;
   cursor: not-allowed;
 }
 
+/* Estilos para o texto do rodapé */
 .footer span {
   font-size: 16px;
   color: white;
 }
 
-/* Centralizar e definir o tamanho da imagem */
+/* Estilos do logo */
 .logo-container {
   display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  margin-top: 20px; /* Ajuste se necessário */
+  margin-top: 20px;
 }
 
 .logo {
-  width: 300px; /* Tamanho desejado da largura */
-  height: auto; /* Mantém a proporção da imagem */
+  width: 300px;
+  height: auto; /* Altura automática para manter a proporção */
 }
 
-/* Estilos para o texto abaixo do logo */
+/* Estilo do texto abaixo do logo */
 .explore-text {
-  text-align: center; /* Centraliza o texto */
-  margin-top: 20px; /* Ajusta o espaçamento superior */
+  text-align: center;
+  margin-top: 20px;
 }
 
 .explore-title {
-  font-size: 36px; /* Tamanho grande para o título */
-  font-weight: bold; /* Deixa o texto em negrito */
-  margin: 0; /* Remove margens extras */
+  font-size: 36px;
+  font-weight: bold;
+  margin: 0;
 }
 
 .explore-description {
-  font-size: 18px; /* Tamanho menor para a descrição */
-  color: #666; /* Cor suave para o texto */
-  margin-top: 10px; /* Espaçamento entre os textos */
-  line-height: 1.5; /* Define o espaçamento entre as linhas */
+  font-size: 18px;
+  color: #666;
+  margin-top: 10px;
+  line-height: 1.5;
 }
 
-
-/* Estilos gerais para o formulário de busca */
+/* Estilos do formulário de busca */
 .search-form {
   display: flex;
-  justify-content: center; /* Centraliza o conteúdo do formulário */
+  justify-content: center;
   margin-top: 20px;
   width: 100%;
 }
 
-/* Estilos para o botão de busca */
+/* Estilo do botão de busca */
 .search-btn {
   padding: 10px 15px;
-  background-color: #FDECEC; /* Cor de fundo do botão */
+  background-color: #FDECEC;
   border: none;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 25px 0 0 25px; /* Borda arredondada à esquerda */
-  z-index: 1;
+  border-radius: 25px 0 0 25px;
   transition: background-color 0.3s ease;
-  color: white; /* Cor do ícone da imagem */
+  color: white;
 }
 
-/* Efeito de hover no botão */
+/* Efeito de hover no botão de busca */
 .search-btn:hover {
   background-color: #FDECEC;
 }
 
-/* Estilos para a imagem dentro do botão */
+/* Imagem dentro do botão de busca */
 .search-btn-img {
   width: 20px;
   height: 20px;
 }
 
-/* Estilos para o campo de input */
+/* Campo de input da busca */
 .search-input {
   padding: 10px 15px;
   font-size: 16px;
-  width: 300px; /* Largura do campo de texto */
-  border: 2px solid #FDECEC; /* Borda do campo de texto */
-  border-radius: 0 25px 25px 0; /* Borda arredondada à direita */
-  background-color: #FDECEC; /* Cor de fundo do input */
-  color: #FF1510; /* Cor do texto dentro do campo */
+  width: 300px;
+  border: 2px solid #FDECEC;
+  border-radius: 0 25px 25px 0;
+  background-color: #FDECEC;
+  color: #FF1510;
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -279,47 +281,28 @@ body {
   box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
 }
 
-/* Quando o botão é clicado, o input não muda de cor */
-.search-btn:focus + .search-input {
-  border-color: #FDECEC;
-}
-
-/* Estilo para o contêiner que envolve Total de personagens, Ordenar e Somente Favoritos */
+/* Contêiner de informações (Total, Ordenar, Favoritos) */
 .info-container {
   display: flex;
-  justify-content: space-between; /* Distribui os itens entre os extremos */
-  align-items: center; /* Alinha verticalmente os itens */
+  justify-content: space-between;
+  align-items: center;
   margin-top: 20px;
   margin-bottom: 20px;
 }
 
-/* Alinha os botões de "Ordenar A-Z" e "Somente Favoritos" à direita */
+/* Alinha os itens à direita */
 .info-container .right-items {
   display: flex;
-  align-items: center; /* Alinha os itens à direita */
-  gap: 20px; /* Espaçamento entre os itens */
+  align-items: center;
+  gap: 20px;
 }
 
-/* Estilos do switch */
+/* Switch para ordenar */
 .switch-container {
   display: flex;
   align-items: center;
-  justify-content: flex-start;  /* Alinha os itens à esquerda */
-  gap: 8px; /* Espaçamento entre os elementos */
-  white-space: nowrap;  /* Impede quebra de linha */
-}
-
-.switch-label {
-  font-size: 16px;
-  font-weight: 500;
-  display: flex; /* Alinha os itens lado a lado */
-  align-items: center; /* Centraliza o ícone verticalmente */
-  gap: 8px; /* Espaçamento entre o texto e o ícone */
-}
-
-.sort-icon {
-  width: 25px; /* Ajuste o tamanho da imagem */
-  height: 25px;
+  justify-content: flex-start;
+  gap: 8px;
 }
 
 /* Estilos do switch */
@@ -331,7 +314,7 @@ body {
 }
 
 .switch input {
-  opacity: 0;
+  opacity: 0; /* Oculta o input */
   width: 0;
   height: 0;
 }
@@ -360,13 +343,14 @@ body {
   transition: 0.4s;
 }
 
-/* Quando o switch é ativado (checked) */
-.switch input:checked + .slider {
-  background-color: #4CAF50;  /* Cor verde quando ativado */
+/* Estilo quando o switch está ativado */
+input:checked + .slider {
+  background-color: #4CAF50;
 }
 
-.switch input:checked + .slider:before {
-  transform: translateX(25px); /* Move o círculo para a direita */
+/* Estilo do círculo dentro do switch quando ativado */
+input:checked + .slider:before {
+  transform: translateX(26px);
 }
 
 /* Contêiner de carregamento */

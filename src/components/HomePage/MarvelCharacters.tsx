@@ -4,6 +4,7 @@ import { getMarvelCharacters } from '../../services/marvelApi';
 import styles from './MarvelCharacters.module.css';
 import debounce from 'lodash.debounce'; // Importando o debounce
 
+// Definição da interface para o personagem
 interface Character {
   id: number;
   name: string;
@@ -15,44 +16,49 @@ interface Character {
 }
 
 const MarvelCharacters: React.FC = () => {
-  const [characters, setCharacters] = useState<Character[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [search, setSearch] = useState<string>('');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  const [favorites, setFavorites] = useState<number[]>([]);
-  const [showFavoritesOnly, setShowFavoritesOnly] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalCharacters, setTotalCharacters] = useState<number>(0);
-  const [totalPages, setTotalPages] = useState<number>(0);
-  const itemsPerPage = 20;
+  // Estado do componente
+  const [characters, setCharacters] = useState<Character[]>([]);  // Lista de personagens
+  const [loading, setLoading] = useState<boolean>(false);  // Estado de carregamento
+  const [search, setSearch] = useState<string>('');  // Valor da busca
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');  // Ordem de ordenação
+  const [favorites, setFavorites] = useState<number[]>([]);  // Lista de favoritos
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState<boolean>(false);  // Exibir apenas favoritos
+  const [currentPage, setCurrentPage] = useState<number>(1);  // Página atual
+  const [totalCharacters, setTotalCharacters] = useState<number>(0);  // Total de personagens
+  const [totalPages, setTotalPages] = useState<number>(0);  // Total de páginas
+  const itemsPerPage = 20; // Número de itens por página
 
+  // Função para buscar os personagens
   const fetchCharacters = async () => {
-    setLoading(true);
-    const { results, total } = await getMarvelCharacters(currentPage, itemsPerPage, search);
-    setCharacters(results);
-    setTotalCharacters(total);
-    setTotalPages(Math.ceil(total / itemsPerPage));
-    setLoading(false);
+    setLoading(true); // Ativa o carregamento
+    const { results, total } = await getMarvelCharacters(currentPage, itemsPerPage, search); // Chama a API para obter os personagens
+    setCharacters(results); // Atualiza a lista de personagens
+    setTotalCharacters(total); // Atualiza o total de personagens
+    setTotalPages(Math.ceil(total / itemsPerPage)); // Calcula o total de páginas
+    setLoading(false); // Desativa o carregamento
   };
 
-  const debounceFetchCharacters = debounce(fetchCharacters, 1000); // 500ms de delay
+  // Debounce para otimizar a busca
+  const debounceFetchCharacters = debounce(fetchCharacters, 750);
 
+  // Função para alternar o status de favorito
   const toggleFavorite = (characterId: number) => {
     let newFavorites;
     if (favorites.includes(characterId)) {
-      newFavorites = favorites.filter((id) => id !== characterId);
+      newFavorites = favorites.filter((id) => id !== characterId); // Remove dos favoritos
     } else {
       if (favorites.length < 5) {
-        newFavorites = [...favorites, characterId];
+        newFavorites = [...favorites, characterId]; // Adiciona aos favoritos
       } else {
         alert('Você pode favoritar no máximo 5 personagens.');
         return;
       }
     }
-    setFavorites(newFavorites);
-    localStorage.setItem('favorites', JSON.stringify(newFavorites));
+    setFavorites(newFavorites); // Atualiza o estado de favoritos
+    localStorage.setItem('favorites', JSON.stringify(newFavorites)); // Salva os favoritos no localStorage
   };
 
+  // Função para ordenar os personagens por nome
   const sortCharacters = (characters: Character[], order: 'asc' | 'desc') => {
     return characters.sort((a, b) => {
       if (a.name < b.name) return order === 'asc' ? -1 : 1;
@@ -61,36 +67,43 @@ const MarvelCharacters: React.FC = () => {
     });
   };
 
+  // Função para carregar os favoritos do localStorage
+  const loadAllFavorites = () => {
+    const storedFavorites = localStorage.getItem('favorites');
+    if (storedFavorites) {
+      setFavorites(JSON.parse(storedFavorites)); // Carrega os favoritos armazenados
+    }
+  };
+
+  // Filtra os personagens com base na busca
   const filteredCharacters = characters.filter((character) =>
     character.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const loadAllFavorites = () => {
-    const storedFavorites = localStorage.getItem('favorites');
-    if (storedFavorites) {
-      setFavorites(JSON.parse(storedFavorites));
-    }
-  };
-
+  // Filtra os personagens para mostrar apenas os favoritos, se necessário
   const displayedCharacters = showFavoritesOnly
     ? characters.filter((character) => favorites.includes(character.id))
     : filteredCharacters;
 
+  // Ordena e filtra os personagens
   const sortedAndFilteredCharacters = sortCharacters(displayedCharacters, sortOrder);
 
+  // Efeito para buscar os personagens quando a página ou busca muda
   useEffect(() => {
-    debounceFetchCharacters(); // Usando o debounce ao invés de chamar fetchCharacters diretamente
+    debounceFetchCharacters(); // Usando debounce ao invés de chamar fetchCharacters diretamente
   }, [currentPage, search]);
 
+  // Efeito para carregar os favoritos ao iniciar o componente
   useEffect(() => {
     loadAllFavorites();
   }, []);
 
+  // Exibe a tela de carregamento enquanto os dados não são carregados
   if (loading) {
     return (
       <div className={styles['loading-container']}>
-        <img 
-          src="/assets/icones/heroi/noun_Superhero_2227044@1,5x.svg" 
+        <img
+          src="/assets/icones/heroi/noun_Superhero_2227044@1,5x.svg"
           alt="Carregando..."
         />
         <p>Carregando...</p>
@@ -102,9 +115,9 @@ const MarvelCharacters: React.FC = () => {
     <div>
       <h1>
         <Link to="/" onClick={() => window.location.reload()} className={styles['logo-container']}>
-          <img 
-            src="/assets/logo/Group@1,5x.svg" 
-            alt="Personagens da Marvel" 
+          <img
+            src="/assets/logo/Group@1,5x.svg"
+            alt="Personagens da Marvel"
             className={styles['logo']}
           />
         </Link>
@@ -116,6 +129,7 @@ const MarvelCharacters: React.FC = () => {
         </p>
       </div>
       
+      {/* Formulário de busca */}
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -124,7 +138,11 @@ const MarvelCharacters: React.FC = () => {
         className={styles['search-form']}
       >
         <button disabled className={styles['search-btn']}>
-          <img src="/assets/busca/Lupa/Shape@1,5x.svg" alt="Buscar" className={styles['search-btn-img']} />
+          <img
+            src="/assets/busca/Lupa/Shape@1,5x.svg"
+            alt="Buscar"
+            className={styles['search-btn-img']}
+          />
         </button>
         <input
           type="text"
@@ -135,11 +153,12 @@ const MarvelCharacters: React.FC = () => {
         />
       </form>
 
+      {/* Informações de filtro e ordenação */}
       <div className={styles['info-container']}>
         <p>Total de personagens disponíveis: {totalCharacters}</p>
         <div className={styles['right-items']}>
           <div className={styles['switch-container']}>
-            <img 
+            <img
               src="/assets/icones/heroi/noun_Superhero_2227044@1,5x.svg"
               alt="Ícone de Ordenação"
               className={styles['sort-icon']}
@@ -157,6 +176,7 @@ const MarvelCharacters: React.FC = () => {
             </label>
           </div>
 
+          {/* Alternar para mostrar apenas favoritos */}
           <div className={styles['favorites-toggle']} onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}>
             <span className={styles['favorites-icon']}>
               <img
@@ -170,6 +190,7 @@ const MarvelCharacters: React.FC = () => {
         </div>
       </div>
 
+      {/* Exibe a lista de personagens */}
       <div className={styles['character-container']}>
         {sortedAndFilteredCharacters.map((character) => (
           <div key={character.id} className={styles['character-card']}>
@@ -196,6 +217,7 @@ const MarvelCharacters: React.FC = () => {
         ))}
       </div>
 
+      {/* Navegação de páginas */}
       <div className={styles['footer']}>
         <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
           Anterior

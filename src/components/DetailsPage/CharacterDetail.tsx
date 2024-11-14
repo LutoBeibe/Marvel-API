@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getMarvelCharacterDetails } from '../../services/marvelApi';
-import styles from './CharacterDetail.module.css'; // Modificando para usar o CSS Module
+import styles from './CharacterDetail.module.css'; // CSS Module
 
+// Tipos para o personagem e quadrinho
 interface Character {
   id: number;
   name: string;
@@ -23,22 +24,31 @@ interface Comic {
 }
 
 const CharacterDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const [character, setCharacter] = useState<Character | null>(null);
-  const [comics, setComics] = useState<Comic[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [favorites, setFavorites] = useState<number[]>([]);
-  const [comicCount, setComicCount] = useState<number>(0);
-  const [movieCount, setMovieCount] = useState<number>(0);
-  const [rating, setRating] = useState<number | null>(null);
-  const [lastComicDate, setLastComicDate] = useState<string | null>(null);
+  const { id } = useParams<{ id: string }>(); // Obtém o ID do parâmetro da URL
+  const [character, setCharacter] = useState<Character | null>(null); // Estado do personagem
+  const [comics, setComics] = useState<Comic[]>([]); // Estado dos quadrinhos
+  const [loading, setLoading] = useState<boolean>(true); // Estado de carregamento
+  const [favorites, setFavorites] = useState<number[]>([]); // Estado dos favoritos
+  const [comicCount, setComicCount] = useState<number>(0); // Contagem de quadrinhos
+  const [movieCount, setMovieCount] = useState<number>(0); // Contagem de filmes
+  const [rating, setRating] = useState<number | null>(null); // Avaliação do personagem
+  const [lastComicDate, setLastComicDate] = useState<string | null>(null); // Data do último quadrinho
+  const [search, setSearch] = useState<string>(''); // Estado para armazenar o texto da pesquisa
 
+  // Efeito para buscar detalhes do personagem quando o componente for montado ou quando o ID mudar
   useEffect(() => {
     const fetchCharacterDetails = async () => {
       if (id) {
         setLoading(true);
-        const { characterData, comicsData, comicCount, movieCount, rating, lastComicDate } = await getMarvelCharacterDetails(Number(id));
-        
+        const {
+          characterData,
+          comicsData,
+          comicCount,
+          movieCount,
+          rating,
+          lastComicDate,
+        } = await getMarvelCharacterDetails(Number(id));
+
         setCharacter(characterData);
         setComics(comicsData);
         setComicCount(comicCount);
@@ -49,6 +59,7 @@ const CharacterDetail: React.FC = () => {
       }
     };
 
+    // Recupera os favoritos do localStorage
     const storedFavorites = localStorage.getItem('favorites');
     if (storedFavorites) {
       setFavorites(JSON.parse(storedFavorites));
@@ -57,49 +68,32 @@ const CharacterDetail: React.FC = () => {
     fetchCharacterDetails();
   }, [id]);
 
+  // Função para alternar o estado de favorito
   const toggleFavorite = (characterId: number) => {
-    if (favorites.includes(characterId)) {
-      const newFavorites = favorites.filter((id) => id !== characterId);
+    const newFavorites = favorites.includes(characterId)
+      ? favorites.filter((id) => id !== characterId)
+      : [...favorites, characterId];
+
+    if (newFavorites.length > 5) {
+      alert('Você pode favoritar no máximo 5 personagens.');
+    } else {
       setFavorites(newFavorites);
       localStorage.setItem('favorites', JSON.stringify(newFavorites));
-    } else {
-      if (favorites.length < 5) {
-        const newFavorites = [...favorites, characterId];
-        setFavorites(newFavorites);
-        localStorage.setItem('favorites', JSON.stringify(newFavorites));
-      } else {
-        alert('Você pode favoritar no máximo 5 personagens.');
-      }
     }
   };
 
+  // Função para formatar a data
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'N/A';
     const date = new Date(dateString);
     return date.toLocaleDateString('pt-BR', {
       year: 'numeric',
-      month: 'long', // Exibe o nome completo do mês
-      day: '2-digit', // Exibe o dia com dois dígitos
+      month: 'long',
+      day: '2-digit',
     });
   };
 
-  
-  <div className={styles['info-row']}>
-    <p><strong>Data do Último Quadrinho:</strong> {formatDate(lastComicDate)}</p>
-  </div>
-  
-  const [search, setSearch] = useState<string>(''); // Estado para armazenar o texto da pesquisa
-  
-  const fetchCharacters = async () => {
-    setLoading(true);  // Inicia o carregamento
-    const { results, total } = await getMarvelCharacters(currentPage, itemsPerPage, search);  // Chama a API
-    setCharacters(results);  // Atualiza os personagens
-    setTotalCharacters(total);  // Atualiza o número total de personagens
-    setTotalPages(Math.ceil(total / itemsPerPage));  // Atualiza o total de páginas
-    setLoading(false);  // Finaliza o carregamento
-  };
-  
-
+  // Se estiver carregando, exibe o indicador de carregamento
   if (loading) {
     return (
       <div className={styles['loading-container']}>
@@ -112,118 +106,132 @@ const CharacterDetail: React.FC = () => {
     );
   }
 
-  if (!character) return <div>Personagem não encontrado.</div>;
+  // Se o personagem não for encontrado, exibe uma mensagem
+  if (!character) {
+    return <div>Personagem não encontrado.</div>;
+  }
 
+  // Verifica se o personagem está nos favoritos
   const isFavorite = favorites.includes(character.id);
 
   return (
     <div className={styles['character-detail-page']}>
-    <header className={styles['header']}>
-  <Link to="/" className={styles['logo-link']}>
-    <img src="/assets/logo/Group@1,5x.svg" alt="Marvel" className={styles['logo']} />
-  </Link>
+      <header className={styles['header']}>
+        <Link to="/" className={styles['logo-link']}>
+          <img 
+            src="/assets/logo/Group@1,5x.svg" 
+            alt="Marvel" 
+            className={styles['logo']} 
+          />
+        </Link>
 
-  <div className={styles['search-bar-container']}>
-    <input
-      type="text"
-      placeholder="Procure por heróis - Não ta funcionando ainda =("
-      className={styles['search-bar']}
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
-    />
-    
-  </div>
-</header>
-
-
-
+        {/* Barra de pesquisa */}
+        <div className={styles['search-bar-container']}>
+          <input
+            type="text"
+            placeholder="Procure por heróis - Ainda não funcionando"
+            className={styles['search-bar']}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+      </header>
 
       <div className={styles['character-container']}>
+        {/* Imagem e detalhes do personagem */}
         <div className={styles['character-image']}>
           <img
             src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
             alt={character.name}
           />
         </div>
+
         <div className={styles['character-details']}>
+          <div className={styles['character-name-container']}>
+            <h1>{character.name}</h1>
+            <button className={styles['favorite-button']} onClick={() => toggleFavorite(character.id)}>
+              <img
+                src={isFavorite ? '/assets/icones/heart/Path.svg' : '/assets/icones/heart/Path Copy 2@1,5x.svg'}
+                alt={isFavorite ? 'Favorito' : 'Não Favorito'}
+                className={styles['favorite-icon']}
+              />
+            </button>
+          </div>
 
+          <p>{character.description || 'Sem descrição disponível'}</p>
 
-        <div className={styles['character-name-container']}>
-          <h1>{character.name}</h1>
-          <button className={styles['favorite-button']} onClick={() => toggleFavorite(character.id)}>
-    <img
-      src={isFavorite ? '/assets/icones/heart/Path.svg' : '/assets/icones/heart/Path Copy 2@1,5x.svg'}
-      alt={isFavorite ? 'Favorito' : 'Não Favorito'}
-      className={styles['favorite-icon']}
-    />
-  </button>
-        </div>
-        <p>{character.description || 'Sem descrição disponível'}</p>
           <div className={styles['additional-info']}>
-          <div className={styles['info-row']}>
-  <div className={styles['info-item']}>
-    <p><strong>Filmes</strong></p>
-    <img 
-      src="/assets/icones/book/Group@1,5x.svg" 
-      alt="Filmes" 
-      className={styles['info-icon']}
-    />
-    <span><strong>{movieCount}</strong></span>
-  </div>
-  <div className={styles['info-item']}>
-    <p><strong>Quadrinhos</strong></p>
-    <img 
-      src="/assets/icones/video/Shape@1,5x.svg" 
-      alt="Quadrinhos" 
-      className={styles['info-icon']}
-    />
-    <span><strong>{comicCount}</strong></span>
-  </div>
-</div>
-<div className={styles['info-row']}>
-  <div className={styles['rating']}>
-  <p><strong>Avaliação:</strong></p>
-    {rating && rating > 3 ? (
-      <img 
-        src="/assets/review/Group 4@1,5x.svg" 
-        alt="Avaliação Alta"
-        className={styles['rating-image']}
-      />
-    ) : (
-      <img 
-        src="/assets/review/Path@1,5x.svg" 
-        alt="Avaliação Baixa"
-        className={styles['rating-image']}
-      />
-    )}
-  </div>
-</div>
-          <div className={styles['info-row']}>
-            <span><strong>Data do Último Quadrinho</strong></span>
-          </div>
-          <span><strong>{formatDate(lastComicDate) ?? 'N/A'}</strong></span>  
+            {/* Informações adicionais sobre filmes e quadrinhos */}
+            <div className={styles['info-row']}>
+              <div className={styles['info-item']}>
+                <p><strong>Filmes</strong></p>
+                <img 
+                  src="/assets/icones/book/Group@1,5x.svg" 
+                  alt="Filmes" 
+                  className={styles['info-icon']}
+                />
+                <span><strong>{movieCount}</strong></span>
+              </div>
+              <div className={styles['info-item']}>
+                <p><strong>Quadrinhos</strong></p>
+                <img 
+                  src="/assets/icones/video/Shape@1,5x.svg" 
+                  alt="Quadrinhos" 
+                  className={styles['info-icon']}
+                />
+                <span><strong>{comicCount}</strong></span>
+              </div>
+            </div>
 
+            {/* Exibe a avaliação */}
+            <div className={styles['info-row']}>
+              <div className={styles['rating']}>
+                <p><strong>Avaliação:</strong></p>
+                {rating && rating > 3 ? (
+                  <img 
+                    src="/assets/review/Group 4@1,5x.svg" 
+                    alt="Avaliação Alta"
+                    className={styles['rating-image']}
+                  />
+                ) : (
+                  <img 
+                    src="/assets/review/Path@1,5x.svg" 
+                    alt="Avaliação Baixa"
+                    className={styles['rating-image']}
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Data do último quadrinho */}
+            <div className={styles['info-row']}>
+              <span><strong>Data do Último Quadrinho:</strong></span>
+              <span>{formatDate(lastComicDate) || 'N/A'}</span>
+            </div>
           </div>
         </div>
       </div>
 
+      {/* Quadrinhos do personagem */}
       <div className={styles['character-comics']}>
-  <h2>Últimos lançamentos</h2>
-  <div className={styles['comics-grid']}>
-    {comics.slice(0, 10).map((comic, index) => (
-      <div key={index} className={styles['comic-item']}>
-        <img
-          src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}
-          alt={comic.title}
-        />
-        <h3>{comic.title}</h3>
+        <h2>Últimos lançamentos</h2>
+        <div className={styles['comics-grid']}>
+          {comics.slice(0, 10).map((comic, index) => (
+            <div key={index} className={styles['comic-item']}>
+              <img
+                src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}
+                alt={comic.title}
+              />
+              <h3>{comic.title}</h3>
+            </div>
+          ))}
+        </div>
       </div>
-    ))}
-  </div>
-</div>
-<footer className={styles['footer']}>
-    <p>Feito por Guilherme Medeiros 💜</p>
-  </footer>
+
+      {/* Rodapé */}
+      <footer className={styles['footer']}>
+        <p>Feito por Guilherme Medeiros 💜</p>
+      </footer>
     </div>
   );
 };

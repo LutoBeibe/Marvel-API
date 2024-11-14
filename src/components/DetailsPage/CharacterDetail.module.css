@@ -1,246 +1,252 @@
-
+/* Página de detalhes do personagem */
 .character-detail-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between; /* Espaça a logo e a barra de pesquisa */
-    align-items: center;
-    width: 100%;
-    padding: 10px;
-    max-width: 1200px; /* Para limitar a largura máxima */
-    margin: 0 auto; /* Centraliza o conteúdo horizontalmente */
-  }
-  
-  .logo {
-    width: 250px;
-    margin-left: 20px;
-  }
-
-  .logo-link {
-    flex-shrink: 0; /* Garante que a logo não encolha */
-  }
-
-  .search-bar-container {
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Centraliza a barra de pesquisa */
-    flex-grow: 1; /* Faz com que a barra de pesquisa ocupe o máximo de espaço disponível */
-    margin-left: 20px; /* Distância da logo até a barra de pesquisa */
-  }
-  
-  .search-bar {
-    padding: 12px 20px; /* Aumenta o padding para deixar a barra mais confortável */
-    font-size: 16px; /* Tamanho da fonte */
-    width: 100%;
-    max-width: 500px; /* Limita o tamanho máximo da barra de pesquisa */
-    margin-right: 10px; /* Distância entre a barra de pesquisa e o ícone de lupa */
-    border-radius: 25px; /* Borda arredondada */
-    border: 1px solid #ccc; /* Cor de borda */
-    background-color: #f8f8f8; /* Cor de fundo suave */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transições suaves para borda e sombra */
-    background-image: url('/assets/busca/Lupa/Shape@1,5x.svg'); /* Imagem da lupa */
-    background-size: 20px 20px; /* Tamanho da lupa */
-    background-repeat: no-repeat; /* Não repetir a imagem */
-    background-position: left 10px center; /* Posiciona a lupa à esquerda dentro da barra */
-    padding-left: 40px; /* Espaço à esquerda para garantir que o texto não sobreponha a lupa */
-  }
-  
-  .search-bar:focus {
-    border-color: #007bff; /* Cor de borda quando a barra estiver em foco */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra sutil quando a barra estiver em foco */
-  }
-
-  
-  .character-container {
-    display: flex;
-    flex-direction: row-reverse; /* Alterado para row-reverse para a imagem vir à direita */
-    align-items: flex-start; 
-    justify-content: center;
-    margin-top: 20px;
-    max-width: 1200px;
-    width: 100%;
-    gap: 40px; /* Adiciona espaçamento entre a imagem e os detalhes */
-  }
-  
-  .character-image {
-    flex: 1;
-    max-width: 300px;
-    padding: 10px;
-  }
-  
-  .character-image img {
-    width: 100%;
-    height: auto;
-  }
-  
-  .character-details {
-    flex: 1; /* Reduz a largura da seção para 1 parte, o que a deixa 30% menor em relação ao tamanho atual */
-    max-width: 420px; /* Limita o tamanho máximo a 420px, ou 30% menor em relação aos 600px anteriores */
-    text-align: justify; /* Justifica o texto dentro da seção */
-    padding: 10px; /* Adiciona um pequeno padding, se necessário */
-  }
-  
-  .character-details p {
-    text-align: justify; /* Justifica todos os parágrafos dentro da seção de detalhes */
-  }
-  
-  .character-name-container {
-    display: flex;
-    align-items: center; /* Alinha verticalmente o nome e o botão */
-    justify-content: space-between; /* Espaça o nome e o botão */
-    margin-bottom: 20px; /* Espaço abaixo do nome e do botão */
-  }
-  
-  .character-name-container h1 {
-    margin: 0; /* Remove margem padrão do h1 */
-    font-size: 24px; /* Ajuste de tamanho, se necessário */
-  }
- 
-  
-  .favorite-button {
-    margin-left: 20px; /* Espaço entre o nome e o botão */
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-
-  
-  .additional-info {
-    margin-top: 20px;
-    font-size: 16px;
-  }
-  
-  .character-comics {
-    width: 100%; /* Garante que a largura da seção de quadrinhos ocupe 100% da largura disponível */
-    max-width: 1200px; /* Garante que o conteúdo não ultrapasse essa largura */
-    margin: 0 auto; /* Centraliza a grid de quadrinhos */
-    padding: 20px; /* Adiciona espaçamento interno, se necessário */
-  }
-  
-  .comics-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr); /* 6 colunas de largura igual */
-    gap: 20px; /* Espaçamento entre os quadrinhos */
-    justify-items: center; /* Garante que os itens da grid fiquem centralizados */
-  }
-  
-  .comic-item {
-    text-align: center; /* Centraliza o conteúdo dentro de cada quadrinho */
-  }
-  
-  .comic-item img {
-    width: 100%; /* Faz a imagem ocupar toda a largura do item */
-    height: auto;
-  }
-  
-  
-
-  .additional-info {
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
 }
 
+/* Cabeçalho da página */
+.header {
+  display: flex;
+  justify-content: space-between; /* Espaça logo e barra de pesquisa */
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  max-width: 1200px; /* Limita a largura máxima do cabeçalho */
+  margin: 0 auto; /* Centraliza o conteúdo horizontalmente */
+}
 
+/* Logo dentro do cabeçalho */
+.logo {
+  width: 200px;
+  margin-left: 20px; /* Espaço à esquerda da logo */
+}
+
+/* Link da logo que não deve encolher */
+.logo-link {
+  flex-shrink: 0;
+}
+
+/* Contêiner da barra de pesquisa */
+.search-bar-container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centraliza a barra de pesquisa */
+  flex-grow: 1; /* Barra de pesquisa ocupa o máximo de espaço disponível */
+  margin-left: 20px; /* Distância da logo até a barra */
+}
+
+/* Estilo da barra de pesquisa */
+.search-bar {
+  padding: 12px 20px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 500px; /* Limita a largura máxima da barra */
+  margin-right: 10px; /* Distância da barra ao ícone da lupa */
+  border-radius: 25px; /* Bordas arredondadas */
+  border: 1px solid #ccc;
+  background-color: #f8f8f8; /* Fundo claro */
+  background-image: url('/assets/busca/Lupa/Shape@1,5x.svg'); /* Ícone da lupa */
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: left 10px center; /* Posiciona o ícone */
+  padding-left: 40px; /* Espaço adicional para o ícone */
+}
+
+/* Efeito de foco na barra de pesquisa */
+.search-bar:focus {
+  border-color: #007bff; /* Cor de borda ao focar */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra ao focar */
+}
+
+/* Contêiner do personagem */
+.character-container {
+  display: flex;
+  flex-direction: row-reverse; /* Imagem à direita */
+  align-items: flex-start;
+  justify-content: center;
+  margin-top: 20px;
+  max-width: 1200px;
+  width: 100%;
+  gap: 40px; /* Espaçamento entre imagem e detalhes */
+}
+
+/* Estilo da imagem do personagem */
+.character-image {
+  flex: 1;
+  max-width: 300px;
+  padding: 10px;
+}
+
+.character-image img {
+  width: 100%;
+  height: auto;
+}
+
+/* Estilo dos detalhes do personagem */
+.character-details {
+  flex: 1; /* Ajuste para 1 parte do espaço */
+  max-width: 420px; /* Largura máxima */
+  text-align: justify;
+  padding: 10px;
+}
+
+/* Estilo dos parágrafos dentro dos detalhes */
+.character-details p {
+  text-align: justify;
+}
+
+/* Contêiner do nome do personagem e botão favorito */
+.character-name-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* Estilo do nome do personagem */
+.character-name-container h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+/* Botão favorito */
+.favorite-button {
+  margin-left: 20px;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* Informações adicionais do personagem */
+.additional-info {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+/* Estilos para os quadrinhos do personagem */
+.character-comics {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Grid de quadrinhos */
+.comics-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+  justify-items: center;
+}
+
+/* Estilo de cada quadrinho */
+.comic-item {
+  text-align: center;
+}
+
+.comic-item img {
+  width: 100%;
+  height: auto;
+}
+
+/* Informações adicionais organizadas em linhas */
 .additional-info .info-row p {
   margin: 0;
-  flex-basis: 48%; /* Controla a largura dos itens dentro do flex */
+  flex-basis: 48%; /* Largura dos itens dentro do flex */
 }
 
 .additional-info .info-row p:last-child {
-  margin-top: 10px; /* Para separar melhor se necessário */
+  margin-top: 10px; /* Separação extra para o último item */
 }
 
 .additional-info p {
-  margin: 0; /* Remove margens extras */
+  margin: 0;
 }
 
-  
-  .additional-info .info-item {
-    display: flex;
-    flex-direction: column; /* Título em cima, número embaixo */
-    align-items: center; /* Centraliza o título e o número */
-    gap: 5px; /* Espaço entre o título e o número */
-    width: 45%; /* Controla a largura de cada item */
-  }
-  
-  .info-item p {
-    margin: 0; /* Remove margens extras do parágrafo */
-  }
-  
-  .info-item span {
-    font-size: 18px; /* Ajuste de tamanho para o número */
-  }
+/* Contêiner para cada item dentro das informações adicionais */
+.additional-info .info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 45%;
+}
 
-  .additional-info .info-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px; /* Espaço entre as linhas */
-  }
-  
-  .rating {
-    display: flex;
-    align-items: center; /* Alinha a imagem e o texto na mesma linha */
-    gap: 10px; /* Espaço entre a imagem e o texto */
-  }
-  
-  .rating-image {
-    width: auto; /* Ajuste o tamanho da imagem conforme necessário */
-    height: auto;
-  }
-  
-  .rating span {
-    font-size: 18px; /* Ajuste de tamanho do número */
-  }
-  .favorite-icon {
-    width: 24px; /* ou qualquer outro tamanho desejado */
-    height: 24px;
-  }
-  
-  /* Contêiner de carregamento */
+.info-item p {
+  margin: 0;
+}
+
+.info-item span {
+  font-size: 18px;
+}
+
+.additional-info .info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px; /* Espaço entre as linhas */
+}
+
+/* Estilo da seção de avaliações */
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rating-image {
+  width: auto;
+  height: auto;
+}
+
+.rating span {
+  font-size: 18px;
+}
+
+/* Ícone favorito */
+.favorite-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Contêiner de carregamento */
 .loading-container {
   display: flex;
-  justify-content: center; /* Alinha horizontalmente */
-  align-items: center;     /* Alinha verticalmente */
-  height: 100vh;           /* Garante que o container ocupe 100% da altura da tela */
-  flex-direction: column;  /* Coloca a imagem e o texto em coluna */
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
 }
 
-/* Estilos para a imagem de carregamento */
+/* Estilo da imagem de carregamento */
 .loading-container img {
-  width: 150px; /* Ajuste o tamanho da imagem conforme necessário */
+  width: 150px;
   height: auto;
-  margin-bottom: 10px; /* Espaçamento entre a imagem e o texto */
+  margin-bottom: 10px;
 }
 
-/* Estilos para o texto de carregamento */
+/* Estilo do texto de carregamento */
 .loading-container p {
-  font-weight: bold;   /* Deixa o texto em negrito */
-  font-size: 16px;     /* Tamanho do texto */
-  color: #333;         /* Cor do texto */
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
 }
 
+/* Estilo do rodapé */
 .footer {
-  background-color: red;  /* Define o fundo vermelho */
-  color: white;           /* Define a cor do texto como branco */
-  text-align: center;     /* Centraliza o texto */
-  padding: 20px 0;        /* Espaçamento interno */
-  font-size: 16px;        /* Define o tamanho da fonte */
-  width:100%;
+  background-color: red;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 16px;
+  width: 100%;
 }
 
 .footer p {
-  margin: 0;              /* Remove a margem para evitar espaçamento extra */
+  margin: 0;
 }
-
-  
-  
-  
-  
