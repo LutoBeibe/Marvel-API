@@ -23,20 +23,21 @@ interface Character {
     path: string;
     extension: string;
   };
+  comics: {
+    available: number;
+  };
 }
 
 // Função para buscar personagens com paginação e filtro por nome
 export const getMarvelCharacters = async (page: number, limit: number, searchTerm?: string): Promise<{ results: Character[], total: number }> => {
   try {
-    const offset = (page - 1) * limit; // Cálculo do offset para a página
+    const offset = (page - 1) * limit;
 
-    // Criar objeto de parâmetros para a requisição
     const params: { [key: string]: any } = {
       limit: limit,
       offset: offset,
     };
 
-    // Se o termo de busca for fornecido, adicionar o filtro `nameStartsWith` nos parâmetros
     if (searchTerm) {
       params.nameStartsWith = searchTerm;
     }
@@ -48,8 +49,8 @@ export const getMarvelCharacters = async (page: number, limit: number, searchTer
     const data = response.data.data;
 
     return {
-      results: data.results as Character[], // Garantindo o tipo correto
-      total: data.total, // Total de personagens
+      results: data.results as Character[],
+      total: data.total,
     };
   } catch (error) {
     console.error('Erro ao buscar personagens', error);
@@ -57,20 +58,41 @@ export const getMarvelCharacters = async (page: number, limit: number, searchTer
   }
 };
 
-// Função para obter os detalhes de um personagem e seus quadrinhos
+// Função para obter os detalhes de um personagem, incluindo quadrinhos e data do último quadrinho
 export const getMarvelCharacterDetails = async (characterId: number) => {
   try {
     const characterResponse = await marvelApi.get(`characters/${characterId}`);
     const characterData = characterResponse.data.data.results[0];
 
+    // Obter número total de quadrinhos disponíveis
+    const comicCount = characterData.comics.available;
+
+    // Obter os quadrinhos e ordenar pela data de venda para pegar a data do mais recente
     const comicsResponse = await marvelApi.get(`characters/${characterId}/comics`, {
       params: { limit: 10, orderBy: '-onsaleDate' },
     });
     const comicsData = comicsResponse.data.data.results;
 
-    return { characterData, comicsData };
+    // Encontrar a data do último quadrinho disponível
+    const lastComic = comicsData[0];
+    const lastComicDate = lastComic?.dates?.find(date => date.type === 'onsaleDate')?.date ?? null;
+
+    // Definindo valores fictícios ou genéricos para movieCount e rating
+    const movieCount = Math.floor(Math.random() * 5);  // Por exemplo, aleatório entre 0 e 4
+    const rating = (Math.random() * 5).toFixed(1);     // Rating fictício entre 0.0 e 5.0
+
+    return {
+      characterData,
+      comicsData,
+      comicCount,
+      lastComicDate,
+      movieCount,
+      rating,
+    };
   } catch (error) {
     console.error('Erro ao buscar detalhes do personagem ou quadrinhos', error);
-    return { characterData: null, comicsData: [] };
+    return { characterData: null, comicsData: [], comicCount: 0, lastComicDate: null, movieCount: 0, rating: 'N/A' };
   }
 };
+
+

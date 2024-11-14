@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import MarvelCharacters from './components/MarvelCharacters';
-import CharacterDetail from './components/CharacterDetail';
+import MarvelCharacters from './components/HomePage/MarvelCharacters';
+import CharacterDetail from './components/DetailsPage/CharacterDetail';
 
 const App: React.FC = () => {
   return (

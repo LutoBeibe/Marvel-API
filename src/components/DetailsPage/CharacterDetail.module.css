@@ -1,0 +1,140 @@
+
+.character-detail-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    max-width: 1200px;
+  }
+  
+  .logo {
+    width: 150px;
+    margin-left: 20px;
+  }
+  
+  .search-bar {
+    padding: 10px;
+    font-size: 16px;
+    width: 200px;
+    margin-right: 20px;
+  }
+  
+  .character-container {
+    display: flex;
+    flex-direction: row-reverse; /* Alterado para row-reverse para a imagem vir à direita */
+    align-items: flex-start; 
+    justify-content: center;
+    margin-top: 20px;
+    max-width: 1200px;
+    width: 100%;
+    gap: 40px; /* Adiciona espaçamento entre a imagem e os detalhes */
+  }
+  
+  .character-image {
+    flex: 1;
+    max-width: 300px;
+    padding: 10px;
+  }
+  
+  .character-image img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .character-details {
+    flex: 2;
+    max-width: 600px;
+    text-align: left; 
+  }
+  .character-name-container {
+    display: flex;
+    align-items: center; /* Alinha verticalmente o nome e o botão */
+    justify-content: space-between; /* Espaça o nome e o botão */
+    margin-bottom: 20px; /* Espaço abaixo do nome e do botão */
+  }
+  
+  .character-name-container h1 {
+    margin: 0; /* Remove margem padrão do h1 */
+    font-size: 24px; /* Ajuste de tamanho, se necessário */
+  }
+ 
+  
+  .favorite-button {
+    margin-left: 20px; /* Espaço entre o nome e o botão */
+    background-color: #ff5c5c;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .favorite-button:hover {
+    background-color: #ff2a2a;
+  }
+  
+  .additional-info {
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  
+  .character-comics {
+    margin-top: 40px;
+    width: 100%;
+  }
+  
+  .comics-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .comic-item {
+    width: 200px;
+    margin: 10px;
+    text-align: center;
+  }
+  
+  .comic-item img {
+    width: 100%;
+    height: auto;
+  }
+
+  .additional-info {
+  margin-top: 20px;
+}
+
+.additional-info .info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px; /* Para dar espaço entre as linhas */
+}
+
+.additional-info .info-row p {
+  margin: 0;
+  flex-basis: 48%; /* Controla a largura dos itens dentro do flex */
+}
+
+.additional-info .info-row p:last-child {
+  margin-top: 10px; /* Para separar melhor se necessário */
+}
+
+.additional-info p {
+  margin: 0; /* Remove margens extras */
+}
+
+  
+  
+  
+  
+  
